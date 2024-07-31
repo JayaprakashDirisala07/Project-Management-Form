@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Project Management Form</title>
+        <script>
+            function onLoad() {
+                document.getElementById('projectID').focus();
+                disableFields();
+            }
+
+            function disableFields() {
+                document.getElementById('projectName').disabled = true;
+                document.getElementById('assignedTo').disabled = true;
+                document.getElementById('assignmentDate').disabled = true;
+                document.getElementById('deadline').disabled = true;
+                document.getElementById('saveButton').disabled = true;
+                document.getElementById('updateButton').disabled = true;
+                document.getElementById('resetButton').disabled = true;
+            }
+
+            function enableFields() {
+                document.getElementById('projectName').disabled = false;
+                document.getElementById('assignedTo').disabled = false;
+                document.getElementById('assignmentDate').disabled = false;
+                document.getElementById('deadline').disabled = false;
+            }
+
+            function resetForm() {
+                document.getElementById('projectForm').reset();
+                onLoad();
+            }
+
+            function checkProjectID() {
+                const projectID = document.getElementById('projectID').value;
+                if (projectID) {
+                    // Simulate a database lookup
+                    const projectExists = checkDatabase(projectID);
+                    if (projectExists) {
+                        // Populate form with data and enable Update and Reset buttons
+                        populateForm(projectExists);
+                        document.getElementById('updateButton').disabled = false;
+                        document.getElementById('resetButton').disabled = false;
+                        document.getElementById('projectID').disabled = true;
+                    } else {
+                        // Enable Save and Reset buttons
+                        enableFields();
+                        document.getElementById('saveButton').disabled = false;
+                        document.getElementById('resetButton').disabled = false;
+                    }
+                }
+            }
+
+            function checkDatabase(projectID) {
+                // Placeholder function for checking the database
+                // In a real application, this would involve an AJAX call to the server
+                const mockDatabase = {
+                    "P001": {
+                        projectName: "Project Alpha",
+                        assignedTo: "John Doe",
+                        assignmentDate: "2023-01-01",
+                        deadline: "2023-12-31"
+                    }
+                };
+                return mockDatabase[projectID] || null;
+            }
+
+            function populateForm(data) {
+                document.getElementById('projectName').value = data.projectName;
+                document.getElementById('assignedTo').value = data.assignedTo;
+                document.getElementById('assignmentDate').value = data.assignmentDate;
+                document.getElementById('deadline').value = data.deadline;
+            }
+
+            function saveData() {
+                // Placeholder function for saving data to the database
+                alert('Data saved successfully!');
+                resetForm();
+            }
+
+            function updateData() {
+                // Placeholder function for updating data in the database
+                alert('Data updated successfully!');
+                resetForm();
+            }
+        </script>
+    </head>
+    <body onload="onLoad()">
+        <h1>Project Management Form</h1>
+        <form id="projectForm">
+            <label for="projectID">Project ID:</label>
+            <input type="text" id="projectID" name="projectID" onblur="checkProjectID()" required><br><br>
+
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" name="projectName" required><br><br>
+
+            <label for="assignedTo">Assigned To:</label>
+            <input type="text" id="assignedTo" name="assignedTo" required><br><br>
+
+            <label for="assignmentDate">Assignment Date:</label>
+            <input type="date" id="assignmentDate" name="assignmentDate" required><br><br>
+
+            <label for="deadline">Deadline:</label>
+            <input type="date" id="deadline" name="deadline" required><br><br>
+
+            <button type="button" id="saveButton" onclick="saveData()">Save</button>
+            <button type="button" id="updateButton" onclick="updateData()">Update</button>
+            <button type="button" id="resetButton" onclick="resetForm()">Reset</button>
+        </form>
+    </body>
+</html>
